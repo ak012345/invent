@@ -5,26 +5,20 @@ class Invent {
 
   List<Comm> getInv() => inv;
   void addComm(Comm commIN) => inv.add(commIN);
-  
+
   void updateInvent(Comm commIN, Comm commOUT) {
     int ndx = -1;
 
-    if (isPresentInArray(commIN.name)) {
-      // if the comm is in the inv
-      ndx = wherePresentInArray(commOUT.name); //get its index
-      this.updateVals();
-      double qty = this.inv[ndx].qty; //get its qty
-      Comm commIN_new = new Comm(commIN.name, qty + commIN.qty);
-
-      this.inv[ndx] = commIN_new; //make this the new item
+    if (isPresentInTheInvent(commIN.name)) {
+      // if the comm is in the inv, update Vals appropriately
+      this.updateValsOfInventItem(commIN);
     } else {
-      this.addComm(
-          new Comm(commIN.name, commIN.qty)); // if it isnt there, add it
+     // if the commIN wasnt in the Invent, add it.
     }
 
-    if (isPresentInArray(commOUT.name)) {
+    if (isPresentInTheInvent(commOUT.name)) {
       // if the comm OBJECT is in the inv
-      ndx = wherePresentInArray(commOUT.name); //get its index
+      ndx = wherePresentInTheInvent(commOUT.name); //get its index
 
       double qty = this.inv[ndx].qty; //get its qty
       Comm commOUT_new = new Comm(commOUT.name, qty - commOUT.qty);
@@ -35,12 +29,51 @@ class Invent {
     }
   }
 
+  void updateValsOfInventItem(Comm commToAppendVal) {
+    bool valWasFound = false;
+    commToAppendVal.val.forEach((currentVal) {
+      //for each val in the new item
+      if (isCurrentValAlsoInInventCommValList(currentVal)) {
+        int ndxInvent = wherePresentInTheInvent(currentVal.name); //get index of comm in the Invent
+        int ndx = whereCurrentValAlsoInInventCommValList(currentVal); 
+        this.inv[ndxInvent].val[ndx].qty = commToAppendVal.qty; //update teh invent Val to the new incomming val
+        valWasFound = true; //the val
+      }
+    });
 
-void updateVals(int ndxToUpdate, Comm theCurrentComm, Comm commToAppend){
+    if(!valWasFound){
+      int ndxInvent = wherePresentInTheInvent(commToAppendVal.name); //get index of comm in the Invent
+      this.inv[ndxInvent].val.addAll(commToAppendVal.val);
+    }
+  }
 
-}
+  bool isCurrentValAlsoInInventCommValList(Comm currentVal) {
+    bool isFound = false;
+    int ndx = wherePresentInTheInvent(
+        currentVal.name); //get index of comm in the Invent
+    this.inv[ndx].val.forEach((curretnInventCommVal) {
+      //loop through each Invent Val and compare names
+      if (curretnInventCommVal.name == currentVal.name) {
+        isFound = true;
+      }
+    });
+    return isFound;
+  }
 
-  bool isPresentInArray(String name) {
+  int whereCurrentValAlsoInInventCommValList(Comm currentVal) {
+    int ndx = -1;
+    int ndxInvent = wherePresentInTheInvent(
+        currentVal.name); //get index of comm in the Invent
+    this.inv[ndxInvent].val.forEach((curretnInventCommVal) {
+      //loop through each Invent Val and compare names
+      if (curretnInventCommVal.name == currentVal.name) {
+        ndx = this.inv[ndxInvent].val.indexOf(curretnInventCommVal);
+      }
+    });
+    return ndx;
+  }
+
+  bool isPresentInTheInvent(String name) {
     bool exists = false;
     this.inv.forEach((element) {
       if (element.name == name) {
@@ -50,7 +83,7 @@ void updateVals(int ndxToUpdate, Comm theCurrentComm, Comm commToAppend){
     return exists;
   }
 
-  int wherePresentInArray(String name) {
+  int wherePresentInTheInvent(String name) {
     int ndx = -1;
     this.inv.forEach((element) {
       if (element.name == name) {
