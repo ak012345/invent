@@ -1,8 +1,9 @@
 import 'app.dart';
 
 
+
 void main() {
   
-new app();
+App myApp = new App();
   
 }

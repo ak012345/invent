@@ -7,6 +7,11 @@
       this.name = name;
       this.qty = qty;
     }
+
+    Comm.copy(Comm newComm){
+      this.name = newComm.name.toUpperCase();
+      this.qty = newComm.qty;
+    }
     
     double getQty() => this.qty;
     String getName() => this.name;
