@@ -11,8 +11,10 @@ class App {
     Comm c = new Comm("C", 2);
 
     // execute a new trade
+    // in, out
     new Trde(a, b, theInv);
     new Trde(c, b, theInv); 
+    
 
     a.showValEntries();
     b.showValEntries();

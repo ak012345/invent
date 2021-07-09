@@ -11,6 +11,7 @@
     Comm.copy(Comm newComm){
       this.name = newComm.name.toUpperCase();
       this.qty = newComm.qty;
+      this.val = newComm.val;
     }
     
     double getQty() => this.qty;

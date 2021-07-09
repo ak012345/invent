@@ -2,7 +2,7 @@ import 'comm.dart';
 import 'invent.dart';
 
 class Trde {
-  // a=4, b=1
+  // in:a=4, out:b=1
   Trde(Comm commIn, Comm commOut, Invent theInv) {
     Comm newTrdeOutVal = new Comm(commOut.name, (commOut.qty / commIn.qty));
     Comm newTrdeInVal = new Comm(commIn.name, commIn.qty / commOut.qty);
