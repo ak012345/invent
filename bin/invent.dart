@@ -6,46 +6,42 @@ class Invent {
   List<Comm> getInv() => inv;
   void addComm(Comm commIN) => inv.add(commIN);
 
-
-
-
-
   void updateInvent(Comm commIN, Comm commOUT) {
 // in:a=4, out:b=1
-//in:c=2, out: 
+//in:c=2, out:
     if (isPresentInTheInvent(commIN.name)) {
       // if the comm is in the inv, update Vals appropriately
       this.updateValsOfInventItem(commIN);
       // todo: add up the inventvalues
     } else {
-     // if the commIN wasnt in the Invent, add it.
-     this.inv.add(commIN);
+      // if the commIN wasnt in the Invent, add it.
+      this.inv.add(commIN);
     }
 
     if (isPresentInTheInvent(commOUT.name)) {
       // if the comm OBJECT is in the inv
       this.updateValsOfInventItem(commOUT);
-       // todo: subtract invent values
+      // todo: subtract invent values
     } else {
       commOUT = new Comm.copy(commOUT);
-      commOUT.qty = 0-commOUT.qty;
-       this.inv.add(commOUT); // if it isnt there, add it
+      commOUT.qty = 0 - commOUT.qty;
+      this.inv.add(commOUT); // if it isnt there, add it
     }
   }
 
-
-
-
-
-
   void updateValsOfInventItem(Comm commToAppendVal) {
     // bool valWasFound = false;
-    commToAppendVal.val.forEach((currentVal) {
+  List<Comm> copiedList = List.from(commToAppendVal.val);
+
+    copiedList.forEach((currentVal) {
       //for each val in the new item
+
       if (isCurrentValAlsoInInventCommValList(currentVal)) {
-        int ndxInvent = wherePresentInTheInvent(currentVal.name); //get index of comm in the Invent
-        int ndx = whereCurrentValAlsoInInventCommValList(currentVal); 
-        this.inv[ndxInvent].val[ndx].qty = commToAppendVal.qty; //update teh invent Val to the new incomming val
+        int ndxInvent = wherePresentInTheInvent(
+            currentVal.name); //get index of comm in the Invent
+        int ndx = whereCurrentValAlsoInInventCommValList(currentVal);
+        this.inv[ndxInvent].val[ndx].qty = commToAppendVal
+            .qty; //update the invent Val to the new incomming val
         // valWasFound = true; //the val
       } else {
         int ndxInvent = wherePresentInTheInvent(commToAppendVal.name); //get index of comm in the Invent
@@ -53,11 +49,6 @@ class Invent {
       }
     });
 
-    // if(!valWasFound){
-
-    //   int ndxInvent = wherePresentInTheInvent(commToAppendVal.name); //get index of comm in the Invent
-    //   this.inv[ndxInvent].val.addAll(commToAppendVal.val);
-    // }
   }
 
   bool isCurrentValAlsoInInventCommValList(Comm currentVal) {
